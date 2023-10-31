@@ -43,13 +43,13 @@ local lsp_flags = {
 -- capabilities:能力
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities.textDocument.completion.completionItem.snippetSupport = true
--- c/c++ -- apt安装
+-- c/c++ -- pacman安装clang
 require('lspconfig')['clangd'].setup {
   on_attach = on_attach,
   flags = lsp_flags,
   capabilities = capabilities,
 }
--- python3 -- mason安装pyright
+-- python3 -- sudo npm -g intall pyright
 require('lspconfig')['pyright'].setup {
   on_attach = on_attach,
   flags = lsp_flags,
@@ -86,31 +86,58 @@ require('lspconfig')['tsserver'].setup {
 }
 
 -- lua -- mason安装lua-language-server
-require('lspconfig')['sumneko_lua'].setup {
-  on_attach = on_attach,
-  flags = lsp_flags,
-  capabilities = capabilities,
-    settings = {
-    Lua = {
-      runtime = {
-        -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
-        version = 'LuaJIT',
-      },
-      diagnostics = {
-        -- Get the language server to recognize the `vim` global 没用啊...
-        globals = {'vim'},
-      },
-      workspace = {
-        -- Make the server aware of Neovim runtime files
-        library = vim.api.nvim_get_runtime_file("", true),
-      },
-      -- Do not send telemetry data containing a randomized but unique identifier
-      telemetry = {
-        enable = false,
-      },
-    },
-  },
+require'lspconfig'.lua_ls.setup {
+  on_init = function(client)
+    local path = client.workspace_folders[1].name
+    if not vim.loop.fs_stat(path..'/.luarc.json') and not vim.loop.fs_stat(path..'/.luarc.jsonc') then
+      client.config.settings = vim.tbl_deep_extend('force', client.config.settings, {
+        Lua = {
+          runtime = {
+            -- Tell the language server which version of Lua you're using
+            -- (most likely LuaJIT in the case of Neovim)
+            version = 'LuaJIT'
+          },
+          -- Make the server aware of Neovim runtime files
+          workspace = {
+            checkThirdParty = false,
+            library = {
+              vim.env.VIMRUNTIME
+              -- "${3rd}/luv/library"
+              -- "${3rd}/busted/library",
+            }
+            -- or pull in all of 'runtimepath'. NOTE: this is a lot slower
+            -- library = vim.api.nvim_get_runtime_file("", true)
+          }
+        }
+      })
+
+      client.notify("workspace/didChangeConfiguration", { settings = client.config.settings })
+    end
+    return true
+  end
 }
+-- old --
+--require('lspconfig')['sumneko_lua'].setup {
+--  on_attach = on_attach,
+--  flags = lsp_flags,
+--  capabilities = capabilities,
+--  settings = {
+--    Lua = {
+--      runtime = {
+--        -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
+--        version = 'LuaJIT',
+--      },
+--      workspace = {
+--        -- Make the server aware of Neovim runtime files
+--        library = vim.api.nvim_get_runtime_file("", true),
+--      },
+--      -- Do not send telemetry data containing a randomized but unique identifier
+--      telemetry = {
+--        enable = false,
+--      },
+--    },
+--  },
+--}
 
 -- rust
 --require('lspconfig')['rust_analyzer'].setup{
@@ -122,7 +149,4 @@ require('lspconfig')['sumneko_lua'].setup {
 --    }
 --}
 ------------------------------------------------------------------
-
-
-
 

@@ -11,8 +11,7 @@ local capabilities = require("cmp_nvim_lsp").default_capabilities()
 local lspconfig = require('lspconfig')
 
 -- Enable some language servers with the additional completion capabilities offered by nvim-cmp
--- clangd为apt安装,其余为mason安装
-local servers = { 'clangd', 'pyright', 'tsserver', 'html', 'cssls', 'sumneko_lua' }
+local servers = { 'clangd', 'pyright', 'tsserver', 'html', 'cssls', 'lua_ls' }
 for _, lsp in ipairs(servers) do
   lspconfig[lsp].setup {
     capabilities = capabilities,

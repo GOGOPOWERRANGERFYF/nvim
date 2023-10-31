@@ -1,6 +1,7 @@
 -- nvim-notify
-vim.notify = require("notify")
-require('notify')('nvim-notify启动成功!')
+
+--vim.notify = require("notify") -- 已移到init.lua
+--require('notify')('🎉🎉🎉 [插件nvim-notify加载成功!]')
 
 -- keymap -- noremap 不递归映射
 -- \ + n + h 按键

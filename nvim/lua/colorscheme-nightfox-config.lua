@@ -1,5 +1,4 @@
 -- Default options --
---require('nightfox').setup({
 require('nightfox').setup({
   options = {
     -- Compiled file's destination location
@@ -41,11 +40,16 @@ require('nightfox').setup({
     --comments = "italic",
     keywords = "bold",
     --types = "italic,bold",
-  }
+  },
 })
 
+-- 切换主题
 -- setup must be called before loading
-vim.cmd("colorscheme nightfox")
-
-
+--vim.cmd("colorscheme nightfox")
+vim.cmd("colorscheme dayfox")
+--vim.cmd("colorscheme dawnfox")
+--vim.cmd("colorscheme duskfox")
+--vim.cmd("colorscheme nordfox")
+--vim.cmd("colorscheme terafox")
+--vim.cmd("colorscheme carbonfox")
 

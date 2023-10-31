@@ -40,21 +40,28 @@ return require('packer').startup(function(use)
   }
 
   -- alpha-nvim
-  use 'goolord/alpha-nvim'
+  --use 'goolord/alpha-nvim'
+
+  -- dashboard-nvim
+  use { 'glepnir/dashboard-nvim',}
 
   -- symbols-outline 
   use 'simrat39/symbols-outline.nvim'
 
   -- nvim-telescopt
   use {
-    'nvim-telescope/telescope.nvim', tag = '0.1.0',
+    'nvim-telescope/telescope.nvim', tag = '0.1.4',
     -- or                            , branch = '0.1.x',
     requires = { {'nvim-lua/plenary.nvim'} }
   }
 
   -- 顶部标签 管理nvim的buffer
+  --
   --use 'nvim-tree/nvim-web-devicons' -- 安装nvim-tree时已安装过
-  use {'romgrk/barbar.nvim', wants = 'nvim-web-devicons'}
+  --use {'romgrk/barbar.nvim', wants = 'nvim-web-devicons'}
+  --
+  -- bufferline.nvim
+  use {'akinsho/bufferline.nvim', tag = "v3.*"}
 
   -- lualine.nvim 底部状态栏
   use {
@@ -64,6 +71,8 @@ return require('packer').startup(function(use)
 
   -- colorscheme
   use "EdenEast/nightfox.nvim"
+  use { "catppuccin/nvim", as = "catppuccin" }
+  use { "ellisonleao/gruvbox.nvim" }
 
   -- 终端
   -- 官方文档
